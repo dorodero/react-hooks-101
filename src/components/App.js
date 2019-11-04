@@ -1,20 +1,42 @@
-import React from 'react';
+import React, { useState, useReducer } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Event from './Event'
+import reducer from '../reducers';
+
 const App = () => {
+  const [state, dispatch] = useReducer(reducer, [])
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+  const addEvent = e => {
+    e.preventDefault()
+    // dispatch(action)
+    // action = {
+    //  type:'CREATE_EVENT',
+    //  title,
+    //  boty
+    // }
+    dispatch({
+      type:'CREATE_EVENT',
+      title,
+      body
+    })
+    setTitle('')
+    setBody('')
+  }
   return (
     <div className="container-fluid">
       <h4>イベントフォーム作成</h4>
       <form>
         <div className="form-group">
           <label htmlFor="formEventTitle">タイトル</label>
-          <input className="form-control" id="formEventTitle"></input>
+          <input className="form-control" id="formEventTitle" value={title} onChange={e => setTitle(e.target.value)}></input>
         </div>
         <div className="form-group">
           <label htmlFor="formEventBody">ボディー</label>
-          <textarea className="form-control" id="formEventBody"></textarea>
+          <textarea className="form-control" id="formEventBody" value={body} onChange={e => setBody(e.target.value)}></textarea>
         </div>
-        <button className="btn btn-primary">イベントを作成する</button>
+        <button className="btn btn-primary" onClick={addEvent}>イベントを作成する</button>
         <button className="btn btn-danger">全てのイベントを削除する</button>
       </form>
 
@@ -28,7 +50,9 @@ const App = () => {
             <th>ID</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          { state.map((event, index) => (<Event key={index} event={event} dispatch={dispatch}/>))}
+        </tbody>
       </table>
     </div>
   );

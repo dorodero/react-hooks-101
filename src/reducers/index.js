@@ -1,4 +1,3 @@
-import { id } from "postcss-selector-parser"
 
 // action = {
 //     type: 'CREATE_EVENT',
@@ -43,6 +42,9 @@ const events = (state = [], action) => {
             // id: id は省略してidと記載できる
             return [...state, { id, ...event}]
         case 'DELETE_EVENT':
+            return state.filter(event => {
+                return event.id !== action.id
+            })
         case 'DELETE_ALL_EVENTS':
             return []
         default:
