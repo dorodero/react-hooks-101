@@ -33,19 +33,22 @@
 //           body:'2020年に東京でオリンピックを開催します！つきましては…'
 //   　　},
 //  ]
+
+import { CREATE_EVENT, DELETE_EVENT, DELETE_ALL_EVENTS } from '../actions'
+
 const events = (state = [], action) => {
     switch(action.type) {
-        case 'CREATE_EVENT':
+        case CREATE_EVENT:
             const event = { title: action.title, body: action.body }
             const length = state.length
             const id = length === 0 ? 1 : state[length -1].id + 1
             // id: id は省略してidと記載できる
             return [...state, { id, ...event}]
-        case 'DELETE_EVENT':
+        case DELETE_EVENT:
             return state.filter(event => {
                 return event.id !== action.id
             })
-        case 'DELETE_ALL_EVENTS':
+        case DELETE_ALL_EVENTS:
             return []
         default:
             return state
